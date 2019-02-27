@@ -27,25 +27,19 @@
         %h2.main-header__left-box__current-group
           neko
         %ul.main-header__left-box__member-list
-          Member : neko
+          Member :
+          = current_user.name
 
       = link_to root_path do
         .main-header__edit-btn
           Edit
     .messages
-      .message
-        .message__upper-info
-          %p.message__upper-info__talker
-            neko
-          %p.message__upper-info__date
-            2019/02/22(Fri) 18:35:39
-        %p.message__text
-          あいうえお
+      = render @messages
     .form
-      %form#new_message.new_message
+      = form_for [@group, @message] do |f|
         .input-box
-          %input.input-box__text{:type => "text", :placeholder => "type a message"}
-            %label.input-box__image
-              = fa_icon 'image'
-            / %input#message_image.input-box__image__file{:type => "file", :name => "message[image]"}
-        %input.submit-btn{:type => "submit", :name => "commit", :value => "Send"}
+          = f.text_field :content, class: 'input-box__text', placeholder: 'type a message'
+          = f.label :image, class: 'input-box__image' do
+            = fa_icon 'image', class: 'input-box__image'
+            = f.file_field :image, class: 'hidden'
+        = f.submit 'Send', class: 'submit-btn'
