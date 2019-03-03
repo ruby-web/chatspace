@@ -6,7 +6,7 @@
     .side-header
       .side-header__box
         %p.side-header__box__user-name
-          neko
+          = current_user.name
         %ul.side-header__box__menu
           %li.side-header__box__menu__edit-user
             = link_to root_path do
