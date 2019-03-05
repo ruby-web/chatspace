@@ -62,7 +62,6 @@ $(document).on('turbolinks:load', function(){
     $(document).on("click", ".user-search-remove", function () {
       $(this).parent().remove();
     });
-
 });
 
 
