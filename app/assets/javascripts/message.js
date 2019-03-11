@@ -1,7 +1,8 @@
+$(document).on('turbolinks:load', function() {
 $(function(){
   function buildSendMessageHTML(message){
     var imagehtml = message.image == null ? "" : '<img src="${message.image.url}" class="lower-message__image">'
-    var html = `<div class="message">
+    var html = `<div class="message" data-message-id="${message.id} ">
                   <div class="message__upper-info">
                     <p class="message__upper-info__talker">
                       ${message.user_name}
@@ -31,14 +32,55 @@ $(function(){
       processData: false,
       contentType: false
     })
-    .done(function(new_message){
-      var html = buildSendMessageHTML(new_message);
+    .done(function(data){
+      var html = buildSendMessageHTML(data);
       $('.messages').append(html)
-      $('#message__text').val('')
+      $('.input-box__text').val('')
+      $(".submit-btn").prop('disabled', false);
       $('.messages').animate ({scrollTop: $('.messages')[0].scrollHeight},'fast');
     })
     .fail(function(){
       alert('メッセージの送信に失敗しました');
+    });
+  });
+
+
+
+function autoUpdate(){
+      var message_id = $('.message:last').data('message-id') || 0;
+      console.log(message_id);
+      // console.log('発火');
+    $.ajax({
+      url: location.href,
+      type: 'GET',
+      data: { message: {id: message_id} },
+      dataType: 'json'
     })
-  })
+    .done(function(data) {
+      var insertHTML = '';
+      data.forEach(function(message) {
+          // #新しいmessageのみbuilidHTMLで作成、次にinsertHTMLに代入
+          if (message.id > message_id) {
+          insertHTML += buildSendMessageHTML(message);
+          // #buildHTMLに加えていく
+        }
+      });
+      $('.messages').append(insertHTML);
+      $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
+      // .messagesに追加
+    })
+    .fail(function(data){
+      alert('自動更新に失敗しました。')
+    })
+  }
+
+  var interval = setInterval(function(){
+    // console.log($('.message').length);
+     if (window.location.href.match(/\/groups\/\d+\/messages/)){
+       autoUpdate();
+     } else {
+       clearInterval(interval);
+     }
+    }, 5000)
+  });
 });
