@@ -18,14 +18,14 @@
       = link_to root_path do
         .group
           %p.group__group-name
-            neko
+            = @group.name
             %p.group__latest-message
-              おはよう
+              = @group.show_last_message
   .chat-main
     .main-header
       .main-header__left-box
         %h2.main-header__left-box__current-group
-          neko
+          = @group.name
         %ul.main-header__left-box__member-list
           Member :
           = current_user.name
