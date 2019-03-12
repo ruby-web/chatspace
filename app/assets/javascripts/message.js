@@ -35,7 +35,6 @@ $(function(){
     .done(function(data){
       var html = buildSendMessageHTML(data);
       $('.messages').append(html)
-      // $('.input-box__text').val('')
       //resetはform全てのidにかける必要がある
       $('#new_message')[0].reset();
       $('.submit-btn').prop('disabled', false);
@@ -50,8 +49,6 @@ $(function(){
 
 function autoUpdate(){
       var message_id = $('.message:last').data('message-id') || 0;
-      // console.log(message_id);
-      // console.log('発火');
     $.ajax({
       url: location.href,
       type: 'GET',
@@ -62,15 +59,11 @@ function autoUpdate(){
       var insertHTML = '';
       data.forEach(function(message) {
           // #新しいmessageのみbuilidHTMLで作成、次にinsertHTMLに代入
-          // if (message.id > message_id) {
           insertHTML += buildSendMessageHTML(message);
           // #buildSendMessageHTMLに加えていく
-        // }
       });
       $('.messages').append(insertHTML);
-      console.log(this)
       $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
-      // .messagesに追加
     })
     .fail(function(data){
       alert('自動更新に失敗しました。')
@@ -78,7 +71,6 @@ function autoUpdate(){
   }
 
   var interval = setInterval(function(){
-    // console.log($('.message').length);
      if (window.location.href.match(/\/groups\/\d+\/messages/)){
        autoUpdate();
      } else {
