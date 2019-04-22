@@ -28,7 +28,8 @@
           = @group.name
         %ul.main-header__left-box__member-list
           Member :
-          = current_user.name
+          - @group.users.each do |user|
+            %p.main-header__left-box__member-list__member= user.name
 
       = link_to edit_group_path(current_user) do
         .main-header__edit-btn

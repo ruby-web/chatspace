@@ -49,6 +49,7 @@ $(function(){
 
 function autoUpdate(){
       var message_id = $('.message:last').data('message-id') || 0;
+
     $.ajax({
       url: location.href,
       type: 'GET',
@@ -62,9 +63,11 @@ function autoUpdate(){
           insertHTML += buildSendMessageHTML(message);
           // #buildSendMessageHTMLに加えていく
       });
+      if (data.length !== 0) {
       $('.messages').append(insertHTML);
       $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, 'fast');
-    })
+      }
+  })
     .fail(function(data){
       alert('自動更新に失敗しました。')
     })
@@ -79,3 +82,5 @@ function autoUpdate(){
     }, 5000)
   });
 });
+
+
